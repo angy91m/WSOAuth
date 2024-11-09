@@ -235,11 +235,18 @@ class WSOAuth extends PluggableAuth {
 	public function getAttributes( UserIdentity $user ): array {
 		$result = $this->hookContainer->run( 'WSOAuthBeforeAutoPopulateGroups', [ &$user ] );
 
-		if ($result === false) {
+		if ( $result === false ) {
 			return [];
 		}
-		if ( empty($result) ) {
-			return [$this->autoPopulateGroups];
+		$result = is_array($this->$autoPopulateGroups) ? $this->$autoPopulateGroups : [];
+		if (isset($this->authProvider->userGroups)) {
+			foreach($this->authProvider->userGroups as $k => $groups) {
+				if (isset($userGroups[$k])) {
+					$userGroups[$k] = array_values(array_unique(array_merge($userGroups[$k], $groups)));
+				} else {
+					$userGroups[$k] = $groups;
+				}
+			}
 		}
 		return $result;
 	}
