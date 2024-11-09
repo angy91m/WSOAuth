@@ -238,7 +238,7 @@ class WSOAuth extends PluggableAuth {
 		if ( $result === false ) {
 			return [];
 		}
-		$result = is_array($this->$autoPopulateGroups) ? $this->$autoPopulateGroups : [];
+		$userGroups = is_array($this->$autoPopulateGroups) ? $this->$autoPopulateGroups : [];
 		if (isset($this->authProvider->userGroups)) {
 			foreach($this->authProvider->userGroups as $k => $groups) {
 				if (isset($userGroups[$k])) {
@@ -248,7 +248,7 @@ class WSOAuth extends PluggableAuth {
 				}
 			}
 		}
-		return $result;
+		return $userGroups;
 	}
 
 	/**
